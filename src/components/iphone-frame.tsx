@@ -79,34 +79,33 @@ export function IPhoneFrame({
   useEffect(() => {
     if (!fitToViewport) return;
     const fit = () => {
-      const padX = 64;
-      const padY = 64;
+      // Tighter padding on small screens so the device fills the viewport
+      const isCompact = window.innerWidth < 480;
+      const padX = isCompact ? 12 : 64;
+      const padY = isCompact ? 12 : 64;
       const sH = (window.innerHeight - padY) / DEVICE_H;
       const sW = (window.innerWidth - padX) / DEVICE_W;
       setScale(Math.min(1, sH, sW));
     };
     fit();
     window.addEventListener("resize", fit);
-    return () => window.removeEventListener("resize", fit);
+    window.addEventListener("orientationchange", fit);
+    return () => {
+      window.removeEventListener("resize", fit);
+      window.removeEventListener("orientationchange", fit);
+    };
   }, [fitToViewport]);
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.96, y: 8 }}
+      initial={{ opacity: 0, scale: 0.94, y: 12 }}
       animate={{
         opacity: 1,
         scale: 1,
-        y: [0, -3, 0],
       }}
       transition={{
-        opacity: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
-        scale: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
-        y: {
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 0.6,
-        },
+        opacity: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+        scale: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
       }}
       className="relative flex flex-col items-center"
       style={{
@@ -122,8 +121,12 @@ export function IPhoneFrame({
           borderRadius: 56,
           transform: `scale(${scale})`,
           transformOrigin: "top center",
-          boxShadow:
-            "0 60px 120px -20px rgba(15, 18, 38, 0.22), 0 28px 60px -20px rgba(15, 18, 38, 0.18), 0 0 0 1px rgba(15, 18, 38, 0.08)",
+          boxShadow: [
+            "0 100px 180px -40px rgba(10, 14, 26, 0.22)",
+            "0 50px 90px -25px rgba(10, 14, 26, 0.15)",
+            "0 0 0 1px rgba(10, 14, 26, 0.08)",
+            "inset 0 0 0 2px rgba(255,255,255,0.05)",
+          ].join(", "),
         }}
       >
         {/* Dynamic Island */}

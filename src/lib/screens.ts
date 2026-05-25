@@ -13,9 +13,12 @@ export const SCREEN_IDS = [
   "welcome",
   "phone",
   "otp",
+  "trust",
   "pan",
   "aadhaar",
   "cibil-fetch",
+  "security",
+  "workspace",
 
   // Core app (post-onboarding)
   "home",
@@ -39,14 +42,17 @@ export type ScreenMeta = {
 };
 
 export const SCREEN_META: Record<ScreenId, ScreenMeta> = {
-  // Onboarding — Riverline is white + navy + purple, so dark icons throughout.
+  // Onboarding
   splash: { label: "Splash", tint: "dark" },
   welcome: { label: "Welcome", tint: "dark" },
   phone: { label: "Phone", tint: "dark" },
   otp: { label: "OTP", tint: "dark" },
+  trust: { label: "Trust & Consent", tint: "dark" },
   pan: { label: "PAN", tint: "dark" },
   aadhaar: { label: "Aadhaar", tint: "dark" },
   "cibil-fetch": { label: "Fetching CIBIL", tint: "dark" },
+  security: { label: "Security Setup", tint: "dark" },
+  workspace: { label: "Workspace", tint: "dark" },
 
   // Core app
   home: { label: "Home", tint: "dark", isTab: true },
@@ -70,8 +76,11 @@ export const ONBOARDING_FLOW: ScreenId[] = [
   "welcome",
   "phone",
   "otp",
+  "trust",
   "pan",
   "aadhaar",
   "cibil-fetch",
+  "security",
+  "workspace",
   "home",
 ];

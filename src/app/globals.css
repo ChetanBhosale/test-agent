@@ -1,6 +1,4 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -49,20 +47,27 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 
-  /* ─── Riverline brand tokens ───────────────────────────── */
-  --color-riverline-bg: #ffffff;
-  --color-riverline-ink: #0b1020;
-  --color-riverline-ink-2: #1f2540;
-  --color-riverline-mute: #6b7185;
-  --color-riverline-line: #e7e9f2;
-  --color-riverline-card: #f6f7fb;
-  --color-riverline-primary: #5b2fe0;
-  --color-riverline-primary-soft: #7b5cf0;
+  /* ─── Riverline matte palette — premium fintech ─────────── */
+  --color-riverline-bg: #fbfaf6;        /* off-white surface w/ warmth */
+  --color-riverline-ink: #0c0e14;        /* near-black, deep matte */
+  --color-riverline-ink-2: #1d2030;      /* secondary ink */
+  --color-riverline-mute: #6b6f7e;       /* muted body text */
+  --color-riverline-mute-2: #9aa0b0;     /* tertiary text */
+  --color-riverline-line: #ece8de;       /* warm hairline */
+  --color-riverline-line-2: #e3dfd2;     /* slightly stronger */
+  --color-riverline-card: #f4f1e8;       /* matte card surface */
+  --color-riverline-surface: #f8f5ed;    /* elevated cream */
+
+  /* Brand accents (used sparingly) */
+  --color-riverline-primary: #4a33b8;    /* deeper, matter purple */
+  --color-riverline-primary-soft: #6b5cd4;
+  --color-riverline-accent: #5b2fe0;
   --color-riverline-river: #1b6fe6;
   --color-riverline-river-soft: #e6f0ff;
-  --color-riverline-flow: #2fa890;
-  --color-riverline-warn: #e89b2b;
-  --color-riverline-danger: #e15643;
+  --color-riverline-flow: #1f8a76;       /* deeper teal-green */
+  --color-riverline-flow-soft: #e6f4f0;
+  --color-riverline-warn: #c97e1f;
+  --color-riverline-danger: #c4493a;
 }
 
 :root {
@@ -91,8 +96,9 @@
   --chart-5: oklch(0.269 0 0);
   --radius: 0.625rem;
 
-  /* Light page surround */
-  --page-bg: #f5f3ee;
+  /* Warm matte page surround */
+  --page-bg: #ece6d8;
+  --page-bg-2: #e4dccb;
 }
 
 @layer base {
@@ -101,25 +107,26 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "ss01", "cv11", "tnum";
+    font-feature-settings: "ss01", "cv11", "tnum", "ss02";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   html {
     @apply font-sans;
   }
-  /* Tabular numbers everywhere they matter */
+  /* Tabular numbers */
   .tabular,
   input[inputmode="numeric"],
   input[type="tel"] {
     font-variant-numeric: tabular-nums;
     font-feature-settings: "tnum";
   }
-  /* Accessible focus rings (only when navigating with keyboard) */
+  /* Refined focus rings */
   *:focus-visible {
-    outline: 2px solid var(--color-riverline-primary);
+    outline: 2px solid var(--color-riverline-ink);
     outline-offset: 2px;
-    border-radius: 6px;
+    border-radius: 4px;
   }
-  /* Hide scrollbars in scroll containers */
   .no-scroll::-webkit-scrollbar {
     width: 0;
     height: 0;
@@ -129,17 +136,160 @@
   }
 }
 
-/* Utility: subtle slide-in animation for screen mounts */
-@keyframes screen-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
+/* ─── Premium ambient page texture ───────────────────────── */
+.page-surface {
+  background-color: var(--page-bg);
+  background-image:
+    radial-gradient(
+      ellipse 80% 50% at 50% 0%,
+      rgba(255, 252, 244, 0.7) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 70% 60% at 80% 100%,
+      rgba(220, 210, 188, 0.5) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 60% 50% at 10% 80%,
+      rgba(232, 220, 198, 0.4) 0%,
+      transparent 60%
+    );
+}
+
+/* Fine grain overlay for matte feel */
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.04 0 0 0 0 0.04 0 0 0 0 0.05 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 120px 120px;
+}
+
+/* ─── Motion utilities ───────────────────────────────────── */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  100% {
+    transform: translateX(100%);
   }
 }
-.screen-enter {
-  animation: screen-fade-in 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+.shimmer-track {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer-track::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(12, 14, 20, 0.04) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2.4s ease-in-out infinite;
+}
+
+@keyframes ticker {
+  0%, 100% { transform: translateY(0); }
+}
+
+input,
+textarea,
+button {
+  transition: border-color 0.18s ease, box-shadow 0.18s ease,
+    background-color 0.18s ease, transform 0.18s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* ─── Riverline range slider (Loans affordability) ────── */
+.riv-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 24px;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
+.riv-range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    rgb(74, 51, 184) 0,
+    rgb(74, 51, 184) var(--pct, 0%),
+    rgba(74, 51, 184, 0.1) var(--pct, 0%),
+    rgba(74, 51, 184, 0.1) 100%
+  );
+}
+.riv-range::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(74, 51, 184, 0.1);
+}
+.riv-range::-moz-range-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: rgb(74, 51, 184);
+}
+.riv-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 22px;
+  width: 22px;
+  margin-top: -8px;
+  border-radius: 999px;
+  background: white;
+  box-shadow:
+    inset 0 0 0 1px rgba(74, 51, 184, 0.18),
+    0 1px 2px rgba(42, 27, 124, 0.28),
+    0 4px 12px -4px rgba(74, 51, 184, 0.32);
+  cursor: grab;
+}
+.riv-range::-moz-range-thumb {
+  height: 22px;
+  width: 22px;
+  border: none;
+  border-radius: 999px;
+  background: white;
+  box-shadow:
+    inset 0 0 0 1px rgba(74, 51, 184, 0.18),
+    0 1px 2px rgba(42, 27, 124, 0.28),
+    0 4px 12px -4px rgba(74, 51, 184, 0.32);
+  cursor: grab;
+}
+.riv-range:active::-webkit-slider-thumb,
+.riv-range:active::-moz-range-thumb {
+  cursor: grabbing;
+}
+
+
+/* ─── Riverline typography rhythm ──────────────────────── */
+/* Headlines auto-balance their lines for editorial composition. */
+h1, h2, h3 {
+  text-wrap: balance;
+}
+/* Body paragraphs avoid orphan words on the last line. */
+p {
+  text-wrap: pretty;
+}
+/* Higher-quality font rendering and number alignment app-wide. */
+body {
+  font-feature-settings: "ss01", "cv11", "tnum", "ss02", "kern";
+  text-rendering: optimizeLegibility;
 }

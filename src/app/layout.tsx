@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 
@@ -17,9 +17,55 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Riverline — Credit that flows",
+  metadataBase: new URL("https://riverline-app.vercel.app"),
+  title: {
+    default: "Riverline — Credit that flows",
+    template: "%s · Riverline",
+  },
   description:
-    "AI-powered loans, credit health, and a counsellor that listens. Riverline.",
+    "AI-powered loans, credit health, and a counsellor that listens. Built for borrowers who want clarity.",
+  applicationName: "Riverline",
+  keywords: [
+    "Riverline",
+    "AI fintech",
+    "credit health",
+    "personal loan",
+    "CIBIL",
+    "refinance",
+    "AI copilot",
+  ],
+  authors: [{ name: "Riverline" }],
+  openGraph: {
+    title: "Riverline — Credit that flows",
+    description:
+      "AI-powered loans, credit health, and a counsellor that listens.",
+    url: "/",
+    siteName: "Riverline",
+    type: "website",
+    locale: "en_IN",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Riverline — Credit that flows",
+    description:
+      "AI-powered loans, credit health, and a counsellor that listens.",
+  },
+  formatDetection: {
+    telephone: false,
+    email: false,
+    address: false,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ece6d8" },
+    { media: "(prefers-color-scheme: dark)", color: "#0c0e14" },
+  ],
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  colorScheme: "light",
 };
 
 export default function RootLayout({

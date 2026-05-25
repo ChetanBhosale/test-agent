@@ -1,14 +1,22 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "motion/react";
 import { useApp } from "@/context/app-context";
 import {
-  FieldLabel,
   HelperText,
   OnboardingFrame,
   PrimaryButton,
   ScreenHeading,
+  SOFT_EASE,
 } from "./shared";
+import {
+  Field,
+  FieldRow,
+  FieldPrefix,
+  FieldInput,
+  FieldStatusBadge,
+} from "@/components/shared/field";
 
 export function PhoneScreen() {
   const { navigate, setParams } = useApp();
@@ -24,17 +32,26 @@ export function PhoneScreen() {
   return (
     <OnboardingFrame
       footer={
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3.5">
           <PrimaryButton disabled={!valid} onClick={submit}>
             Continue
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path
+                d="M3 7h8M8 3l4 4-4 4"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </PrimaryButton>
-          <p className="text-center text-[11.5px] leading-relaxed text-riverline-mute">
+          <p className="text-center text-[11px] leading-[1.5] text-riverline-mute">
             By continuing, you agree to our{" "}
-            <a className="font-semibold text-riverline-ink-2 underline-offset-2 hover:underline">
+            <a className="font-medium text-riverline-ink underline-offset-2 hover:underline">
               Terms
             </a>{" "}
             and{" "}
-            <a className="font-semibold text-riverline-ink-2 underline-offset-2 hover:underline">
+            <a className="font-medium text-riverline-ink underline-offset-2 hover:underline">
               Privacy Policy
             </a>
             .
@@ -47,7 +64,7 @@ export function PhoneScreen() {
           e.preventDefault();
           submit();
         }}
-        className="flex h-full flex-col"
+        className="flex h-full flex-col justify-center"
       >
         <ScreenHeading
           eyebrow="Sign in"
@@ -59,41 +76,56 @@ export function PhoneScreen() {
           body="We'll text a one-time code to verify it. Standard rates may apply."
         />
 
-        <div className="mt-9">
-          <FieldLabel>Mobile number</FieldLabel>
-          <div className="flex items-stretch gap-2 rounded-[18px] border border-riverline-line bg-white p-2 transition focus-within:border-riverline-primary focus-within:ring-4 focus-within:ring-riverline-primary/12">
-            <div className="flex items-center gap-1.5 rounded-[12px] bg-riverline-card px-3 text-[15px] font-semibold text-riverline-ink">
-              <span className="text-base leading-none" aria-hidden>
-                🇮🇳
-              </span>
-              +91
-            </div>
-            <input
-              type="tel"
-              inputMode="numeric"
-              autoComplete="tel-national"
-              autoFocus
-              placeholder="98 _ _ _ _ _ _ _ _ _"
-              aria-label="Mobile number"
-              value={phone}
-              maxLength={10}
-              onChange={(e) =>
-                setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))
-              }
-              className="flex-1 bg-transparent px-2 text-[18px] font-semibold tracking-[0.04em] text-riverline-ink outline-none placeholder:font-normal placeholder:text-riverline-mute/60 placeholder:tracking-[0.04em]"
-            />
-          </div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, ease: SOFT_EASE, delay: 0.2 }}
+          className="mt-8"
+        >
+          <Field label="Mobile number">
+            <FieldRow status={phone.length > 0 && valid ? "ok" : "default"}>
+              <FieldPrefix>
+                <span className="text-base leading-none" aria-hidden>
+                  🇮🇳
+                </span>
+                +91
+              </FieldPrefix>
+              <FieldInput
+                type="tel"
+                inputMode="numeric"
+                autoComplete="tel-national"
+                autoFocus
+                placeholder="98765 43210"
+                aria-label="Mobile number"
+                value={phone}
+                maxLength={10}
+                onChange={(e) =>
+                  setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))
+                }
+              />
+              <FieldStatusBadge
+                value={phone}
+                ok={valid}
+                remaining={10 - phone.length}
+              />
+            </FieldRow>
+          </Field>
+        </motion.div>
 
-        <div className="mt-6">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, ease: SOFT_EASE, delay: 0.35 }}
+          className="mt-5"
+        >
           <HelperText
             tone="info"
             icon={
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
                 <path
-                  d="M3 6 V4.5 A4 4 0 0 1 11 4.5 V6 M2.5 6 H11.5 V12 H2.5 Z"
+                  d="M3 5.5 V4 A3.5 3.5 0 0 1 10 4 V5.5 M2.5 5.5 H10.5 V11 H2.5 Z"
                   stroke="currentColor"
-                  strokeWidth="1.6"
+                  strokeWidth="1.4"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
@@ -101,8 +133,9 @@ export function PhoneScreen() {
             }
             title="Bank-grade encryption"
             body="Your number is encrypted in transit and never sold to third parties."
+            delay={0.45}
           />
-        </div>
+        </motion.div>
       </form>
     </OnboardingFrame>
   );

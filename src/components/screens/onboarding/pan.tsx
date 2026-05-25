@@ -4,12 +4,19 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { useApp } from "@/context/app-context";
 import {
-  FieldLabel,
   HelperText,
   OnboardingFrame,
   PrimaryButton,
   ScreenHeading,
+  StepIndicator,
+  SOFT_EASE,
 } from "./shared";
+import {
+  Field,
+  FieldRow,
+  FieldInput,
+  FieldStatusBadge,
+} from "@/components/shared/field";
 
 const PAN_REGEX = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
 
@@ -17,7 +24,7 @@ export function PanScreen() {
   const { navigate, setParams } = useApp();
   const [pan, setPan] = useState("");
   const valid = PAN_REGEX.test(pan);
-  const showError = pan.length > 0 && !valid;
+  const showError = pan.length === 10 && !valid;
 
   const submit = () => {
     if (!valid) return;
@@ -27,10 +34,19 @@ export function PanScreen() {
 
   return (
     <OnboardingFrame
-      topRight={<ProgressDots step={1} total={3} />}
+      topRight={<StepIndicator current={1} total={3} />}
       footer={
         <PrimaryButton disabled={!valid} onClick={submit}>
           Continue
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path
+              d="M3 7h8M8 3l4 4-4 4"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </PrimaryButton>
       }
     >
@@ -39,10 +55,10 @@ export function PanScreen() {
           e.preventDefault();
           submit();
         }}
-        className="flex h-full flex-col"
+        className="flex h-full flex-col justify-center"
       >
         <ScreenHeading
-          eyebrow="KYC · 1 of 3"
+          eyebrow="KYC · Step 1 of 3"
           title={
             <>
               Verify your <em>PAN</em>.
@@ -51,76 +67,98 @@ export function PanScreen() {
           body="Needed to fetch your CIBIL score and tailor loan offers to you."
         />
 
-        <div className="mt-9">
-          <FieldLabel>PAN number</FieldLabel>
-          <input
-            type="text"
-            placeholder="ABCDE1234F"
-            autoComplete="off"
-            autoFocus
-            aria-label="PAN number"
-            aria-invalid={showError || undefined}
-            value={pan}
-            maxLength={10}
-            onChange={(e) =>
-              setPan(
-                e.target.value
-                  .toUpperCase()
-                  .replace(/[^A-Z0-9]/g, "")
-                  .slice(0, 10),
-              )
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, ease: SOFT_EASE, delay: 0.2 }}
+          className="mt-8"
+        >
+          <Field
+            label="PAN number"
+            error={
+              showError
+                ? "Format: 5 letters, 4 digits, 1 letter — e.g. ABCDE1234F."
+                : undefined
             }
-            className={
-              "h-14 w-full rounded-[18px] border bg-white px-5 text-[18px] font-semibold tracking-[0.16em] text-riverline-ink outline-none transition placeholder:font-normal placeholder:tracking-[0.16em] placeholder:text-riverline-mute/60 " +
-              (showError
-                ? "border-riverline-danger ring-4 ring-riverline-danger/10"
-                : "border-riverline-line focus:border-riverline-primary focus:ring-4 focus:ring-riverline-primary/12")
+            helper={
+              pan.length === 0 ? (
+                <span className="flex items-center gap-1.5">
+                  <span className="rounded border border-riverline-line bg-riverline-card px-1.5 py-0.5 font-mono text-[10px] tracking-wider text-riverline-ink-2">
+                    AAAAA0000A
+                  </span>
+                  <span>format</span>
+                </span>
+              ) : undefined
             }
-          />
-          {showError && (
-            <p className="mt-2 text-[12.5px] text-riverline-danger">
-              PAN should be 5 letters, 4 digits, then 1 letter — e.g. ABCDE1234F.
-            </p>
-          )}
-        </div>
+            status={valid ? "ok" : showError ? "error" : "default"}
+          >
+            <FieldRow status={valid ? "ok" : showError ? "error" : "default"}>
+              <FieldInput
+                type="text"
+                placeholder="ABCDE1234F"
+                autoComplete="off"
+                autoFocus
+                aria-label="PAN number"
+                aria-invalid={showError || undefined}
+                value={pan}
+                maxLength={10}
+                variant="tracked"
+                onChange={(e) =>
+                  setPan(
+                    e.target.value
+                      .toUpperCase()
+                      .replace(/[^A-Z0-9]/g, "")
+                      .slice(0, 10),
+                  )
+                }
+              />
+              <FieldStatusBadge
+                value={pan}
+                ok={valid}
+                error={showError}
+                remaining={10 - pan.length}
+              />
+            </FieldRow>
+          </Field>
+        </motion.div>
 
-        <div className="mt-6">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, ease: SOFT_EASE, delay: 0.35 }}
+          className="mt-5"
+        >
           <HelperText
             tone="info"
             icon={
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <circle cx="7" cy="7" r="5.5" stroke="currentColor" strokeWidth="1.6" />
-                <path d="M7 6 V10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-                <circle cx="7" cy="4.2" r="0.9" fill="currentColor" />
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                <circle
+                  cx="6.5"
+                  cy="6.5"
+                  r="5"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                />
+                <path
+                  d="M6.5 5.5 V9.5"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                />
+                <circle cx="6.5" cy="3.8" r="0.8" fill="currentColor" />
               </svg>
             }
             title="Soft check, no impact"
             body="Looking up your PAN doesn't affect your CIBIL score in any way."
+            delay={0.45}
           />
-        </div>
+        </motion.div>
       </form>
     </OnboardingFrame>
   );
 }
 
+/** @deprecated Use StepIndicator from shared.tsx */
 export function ProgressDots({ step, total }: { step: number; total: number }) {
-  return (
-    <div
-      className="flex items-center gap-1.5"
-      aria-label={`Step ${step} of ${total}`}
-    >
-      {Array.from({ length: total }).map((_, i) => (
-        <motion.div
-          key={i}
-          animate={{
-            width: i < step ? 24 : 8,
-            backgroundColor:
-              i < step ? "rgb(91,47,224)" : "rgb(231,233,242)",
-          }}
-          transition={{ type: "spring", stiffness: 360, damping: 30 }}
-          className="h-1.5 rounded-full"
-        />
-      ))}
-    </div>
-  );
+  return <StepIndicator current={step} total={total} />;
 }
