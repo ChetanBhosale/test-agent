@@ -1249,16 +1249,17 @@ function LoanCarousel({
           }}
         >
           {/* TOP — Bank + AI match badge.
-              Lender name uses line-clamp-1 so longer lender names like
-              "State Bank of India" don't push the card taller. */}
+              Title block has a fixed min-h so single-line and clipped lender
+              names occupy the same vertical space. Subtitle is nowrap +
+              truncate so "Personal loan · 36 mo" never wraps to two lines. */}
           <div className="flex items-start justify-between gap-2 px-4 pt-4">
-            <div className="flex min-w-0 items-center gap-2.5">
+            <div className="flex min-w-0 flex-1 items-center gap-2.5">
               <BankChip bank={offer.bank} size={36} />
-              <div className="min-w-0">
-                <div className="line-clamp-1 text-[12.5px] font-semibold leading-[1.25] tracking-[-0.005em] text-riverline-ink">
+              <div className="min-w-0 flex-1" style={{ minHeight: 36 }}>
+                <div className="truncate text-[12.5px] font-semibold leading-[1.25] tracking-[-0.005em] text-riverline-ink">
                   {offer.lender}
                 </div>
-                <div className="mt-0.5 text-[10.5px] text-riverline-mute">
+                <div className="mt-0.5 truncate whitespace-nowrap text-[10.5px] text-riverline-mute">
                   Personal loan · 36 mo
                 </div>
               </div>

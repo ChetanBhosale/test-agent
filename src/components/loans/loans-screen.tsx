@@ -517,7 +517,7 @@ function Recommendations() {
             <BankChip bank={r.bank} size={40} />
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
-                <span className="text-[12.5px] font-semibold tracking-[-0.005em] text-riverline-ink">
+                <span className="truncate text-[12.5px] font-semibold tracking-[-0.005em] text-riverline-ink">
                   {r.lender}
                 </span>
                 {r.tone === "best" && <BadgeChip tone="brand">Best fit</BadgeChip>}
@@ -525,7 +525,7 @@ function Recommendations() {
                   <BadgeChip tone="ok">High approval</BadgeChip>
                 )}
               </div>
-              <div className="mt-0.5 text-[10.5px] font-medium uppercase tracking-[0.08em] text-riverline-mute">
+              <div className="mt-0.5 truncate whitespace-nowrap text-[10.5px] font-medium uppercase tracking-[0.08em] text-riverline-mute">
                 Personal loan · 36 mo
               </div>
             </div>
