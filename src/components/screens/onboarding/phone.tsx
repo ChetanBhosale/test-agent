@@ -4,7 +4,6 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { useApp } from "@/context/app-context";
 import {
-  HelperText,
   OnboardingFrame,
   PrimaryButton,
   ScreenHeading,
@@ -110,31 +109,6 @@ export function PhoneScreen() {
               />
             </FieldRow>
           </Field>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, ease: SOFT_EASE, delay: 0.35 }}
-          className="mt-5"
-        >
-          <HelperText
-            tone="info"
-            icon={
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                <path
-                  d="M3 5.5 V4 A3.5 3.5 0 0 1 10 4 V5.5 M2.5 5.5 H10.5 V11 H2.5 Z"
-                  stroke="currentColor"
-                  strokeWidth="1.4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            }
-            title="Bank-grade encryption"
-            body="Your number is encrypted in transit and never sold to third parties."
-            delay={0.45}
-          />
         </motion.div>
       </form>
     </OnboardingFrame>
