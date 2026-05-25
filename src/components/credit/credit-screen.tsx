@@ -1073,13 +1073,13 @@ const OFFER_CARD_HEIGHT = 384;
 function PersonalizedOffers() {
   return (
     <div
-      className="no-scroll flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth"
+      className="no-scroll flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth"
       style={{
+        // Carousel sits in <Stagger noPad> so it owns its own gutters.
         scrollPaddingLeft: 20,
+        scrollPaddingRight: 20,
         paddingLeft: 20,
         paddingRight: 20,
-        marginLeft: -20,
-        marginRight: -20,
       }}
     >
       {OFFERS.map((o, i) => (

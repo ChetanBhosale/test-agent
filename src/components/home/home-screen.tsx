@@ -804,7 +804,7 @@ const ACTIONS: SmartAction[] = [
 
 function SmartActions({ onPlan }: { onPlan: (id: keyof typeof PLANS) => void }) {
   return (
-    <div className="no-scroll -mr-5 flex gap-3 overflow-x-auto pl-5 pr-5">
+    <div className="no-scroll flex gap-3 overflow-x-auto px-5">
       {ACTIONS.map((a, i) => (
         <motion.button
           key={a.id}
@@ -1214,16 +1214,15 @@ function LoanCarousel({
 }) {
   return (
     <div
-      className="no-scroll flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth"
+      className="no-scroll flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth"
       style={{
+        // Carousel sits in <Section noPad> so it owns its own gutters.
+        // 20px on both sides matches the rest of the page; scrollPaddingLeft
+        // ensures snap targets stop at the gutter, not the viewport edge.
         scrollPaddingLeft: 20,
-        // Bleed left/right so cards align to the page's 20px gutter while
-        // still reserving enough trailing space that the last card snaps
-        // cleanly without clipping its CTA.
+        scrollPaddingRight: 20,
         paddingLeft: 20,
         paddingRight: 20,
-        marginLeft: -20,
-        marginRight: -20,
       }}
     >
       {OFFERS.map((offer, i) => (
