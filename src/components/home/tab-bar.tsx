@@ -63,27 +63,49 @@ const TABS: Tab[] = [
     label: "Loans",
     icon: (a) => (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-        <path
-          d="M3 16 L3 9 L7 6 L17 6"
+        {/* Top coin rim — slightly narrower for "stack" feel */}
+        <ellipse
+          cx="10"
+          cy="5"
+          rx="5.5"
+          ry="1.6"
           stroke="currentColor"
           strokeWidth={a ? 1.7 : 1.5}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M3 16 L17 16"
-          stroke="currentColor"
-          strokeWidth={a ? 1.7 : 1.5}
-          strokeLinecap="round"
-        />
-        <path
-          d="M14 9 L17 6 L17 9"
-          stroke="currentColor"
-          strokeWidth={a ? 1.7 : 1.5}
-          strokeLinecap="round"
-          strokeLinejoin="round"
           fill={a ? "currentColor" : "none"}
-          fillOpacity={a ? 0.15 : 0}
+          fillOpacity={a ? 0.12 : 0}
+        />
+        {/* Side walls of the stack */}
+        <path
+          d="M4.5 5 V14.5"
+          stroke="currentColor"
+          strokeWidth={a ? 1.7 : 1.5}
+          strokeLinecap="round"
+        />
+        <path
+          d="M15.5 5 V14.5"
+          stroke="currentColor"
+          strokeWidth={a ? 1.7 : 1.5}
+          strokeLinecap="round"
+        />
+        {/* Bottom curved closure */}
+        <path
+          d="M4.5 14.5 a5.5 1.6 0 0 0 11 0"
+          stroke="currentColor"
+          strokeWidth={a ? 1.7 : 1.5}
+          fill={a ? "currentColor" : "none"}
+          fillOpacity={a ? 0.12 : 0}
+        />
+        {/* Divider between top and middle coin */}
+        <path
+          d="M4.5 8.2 a5.5 1.6 0 0 0 11 0"
+          stroke="currentColor"
+          strokeWidth={a ? 1.7 : 1.5}
+        />
+        {/* Divider between middle and bottom coin */}
+        <path
+          d="M4.5 11.4 a5.5 1.6 0 0 0 11 0"
+          stroke="currentColor"
+          strokeWidth={a ? 1.7 : 1.5}
         />
       </svg>
     ),
